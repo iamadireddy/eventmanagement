@@ -1,16 +1,16 @@
 package com.isolve.adi.eventmanagement.artistsservice.model;
 
-import java.util.UUID;
-
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 //import org.springframework.data.mongodb.core.mapping.Document;
 
-@org.springframework.data.mongodb.core.mapping.Document
 
 //@Document(indexName = "artists-service", type = "artists")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Document(indexName = "artistInfo")
+@org.springframework.data.mongodb.core.mapping.Document
 public class Artists {
 	
 	@Id

@@ -10,7 +10,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
-@EnableElasticsearchRepositories("com.isolve.adi.eventmanagement.artistsservice.es")
+@EnableElasticsearchRepositories("com.isolve.adi.eventmanagement.artistsservice.es.repository")
 public class ESConfiguration {
 
 	@Bean

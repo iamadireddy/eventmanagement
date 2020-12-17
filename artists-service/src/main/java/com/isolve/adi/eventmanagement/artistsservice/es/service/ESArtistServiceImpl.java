@@ -16,11 +16,12 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.isolve.adi.eventmanagement.artistsservice.es.ESArtistsReposiory;
+import com.isolve.adi.eventmanagement.artistsservice.es.repository.ESArtistsReposiory;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsDoesNotExistsException;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsNotCreatedException;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsNotFoundException;
@@ -29,12 +30,13 @@ import com.isolve.adi.eventmanagement.artistsservice.model.Artists;
 @Service
 public class ESArtistServiceImpl implements ESArtistsService{
 	
-	private final String INDEX = "artist";
+	//private final String INDEX = "artistInfo";
 
 	private ESArtistsReposiory esArtistsReposiory;
     private RestHighLevelClient restHighLevelClient;
     private ObjectMapper objectMapper;
 
+    @Autowired
     public ESArtistServiceImpl(ESArtistsReposiory esArtistsReposiory, ObjectMapper objectMapper, RestHighLevelClient restHighLevelClient) {
     	this.esArtistsReposiory = esArtistsReposiory;
     	this.objectMapper = objectMapper;
@@ -45,7 +47,7 @@ public class ESArtistServiceImpl implements ESArtistsService{
 	public Artists createArtists(Artists artist) throws ArtistsNotCreatedException {
 		
 		 Map<String, Object> dataMap = objectMapper.convertValue(artist, Map.class);
-	        IndexRequest indexRequest = new IndexRequest(INDEX)
+	        IndexRequest indexRequest = new IndexRequest()
 	                						.source(dataMap);
 	        try {
 	            IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);//If nothing need to customize then we can use RequestOptions.DEFAULT
@@ -68,7 +70,7 @@ public class ESArtistServiceImpl implements ESArtistsService{
 	@Override
 	public boolean deleteArtists(String id) throws ArtistsDoesNotExistsException {
 		boolean isArtistDeleted = false;
-		DeleteRequest deleteRequest = new DeleteRequest(INDEX, id);
+		DeleteRequest deleteRequest = new DeleteRequest(id);
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
             if(deleteResponse != null)
@@ -83,7 +85,7 @@ public class ESArtistServiceImpl implements ESArtistsService{
 	@Override
 	public Map<String, Object> updateArtists(Artists artist) {
 	
-		UpdateRequest updateRequest = new UpdateRequest(INDEX, artist.getId())
+		UpdateRequest updateRequest = new UpdateRequest()
                 						.fetchSource(true);// Fetch Object after its update
         Map<String, Object> error = new HashMap<>();
         error.put("Error", "Unable to update book");
@@ -104,7 +106,7 @@ public class ESArtistServiceImpl implements ESArtistsService{
 	@Override
 	public Map<String, Object> getArtistsById(String id) throws ArtistsNotFoundException {
 		
-		 GetRequest getRequest = new GetRequest(INDEX, id);
+		 GetRequest getRequest = new GetRequest(id);
 	        GetResponse getResponse = null;
 	        try {
 	            getResponse = restHighLevelClient.get(getRequest, RequestOptions.DEFAULT);
