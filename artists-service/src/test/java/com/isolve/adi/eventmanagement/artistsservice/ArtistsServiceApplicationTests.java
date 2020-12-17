@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isolve.adi.eventmanagement.artistsservice.controller.ArtistsController;
+import com.isolve.adi.eventmanagement.artistsservice.es.service.ESArtistsService;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsDoesNotExistsException;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsNotCreatedException;
 import com.isolve.adi.eventmanagement.artistsservice.model.Artists;
@@ -39,10 +40,11 @@ class ArtistsserviceApplicationTests {
 	private Artists artists;
 	@MockBean
 	private ArtistsService artistsService;
+	private ESArtistsService esArtistsService;
 	@InjectMocks
 	private ArtistsController artistsController;
 	private List<Artists> artistsList;
-	UUID id = UUID.randomUUID();
+	String id = UUID.randomUUID().toString();
 
 	@BeforeEach
 	public void setUp() throws Exception {
