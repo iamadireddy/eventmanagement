@@ -25,11 +25,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isolve.adi.eventmanagement.artistsservice.controller.ArtistsController;
-import com.isolve.adi.eventmanagement.artistsservice.es.service.ESArtistsService;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsDoesNotExistsException;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsNotCreatedException;
 import com.isolve.adi.eventmanagement.artistsservice.model.Artists;
 import com.isolve.adi.eventmanagement.artistsservice.service.ArtistsService;
+import com.isolve.adi.eventmanagement.artistsservice.service.ESArtistsService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest

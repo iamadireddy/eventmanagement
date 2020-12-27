@@ -1,4 +1,4 @@
-package com.isolve.adi.eventmanagement.artistsservice.es.config;
+package com.isolve.adi.eventmanagement.eventservice.config;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Bean;
@@ -11,8 +11,8 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "com.isolve.adi.eventmanagement.artistsservice.repository")
-@ComponentScan(basePackages = "com.isolve.adi.eventmanagement.artistsservice.service")
+@EnableElasticsearchRepositories(basePackages = "com.isolve.adi.eventmanagement.eventservice.repository")
+@ComponentScan(basePackages = "com.isolve.adi.eventmanagement.eventservice.service")
 public class ESConfiguration {
 
 	@Bean

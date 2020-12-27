@@ -22,6 +22,7 @@ import com.isolve.adi.eventmanagement.ticketservice.exception.TicketsNotAvailabl
 import com.isolve.adi.eventmanagement.ticketservice.model.Event;
 import com.isolve.adi.eventmanagement.ticketservice.model.Ticket;
 import com.isolve.adi.eventmanagement.ticketservice.proxy.EventServiceProxy;
+import com.isolve.adi.eventmanagement.ticketservice.service.ESTicketService;
 import com.isolve.adi.eventmanagement.ticketservice.service.TicketService;
 
 @RestController
@@ -30,20 +31,22 @@ public class TicketController {
 
 	private TicketService ticketService;
 	private EventServiceProxy eventServiceProxy;
+	private ESTicketService esTicketService;
 	private Event event = null;
 	private Double ticketPrice;
 
 	@Autowired
-	public TicketController(TicketService ticketService, EventServiceProxy eventServiceProxy) {
+	public TicketController(TicketService ticketService, EventServiceProxy eventServiceProxy, ESTicketService esTicketService) {
 		this.ticketService = ticketService;
 		this.eventServiceProxy = eventServiceProxy;
+		this.esTicketService = esTicketService;
 	}
 
 	@PostMapping
 	public ResponseEntity<?> createTicket(@RequestBody Ticket ticket){
 
 		try {
-			ticket.setId(UUID.randomUUID());
+			ticket.setId(UUID.randomUUID().toString());
 			event = eventServiceProxy.getEventById(ticket.getEvent().getId());
 			boolean isTicketsAvailable = getAvailableTickets(event.getAvailableSeats(), ticket.getNoOfTickets());
 			if(isTicketsAvailable) {
@@ -62,10 +65,10 @@ public class TicketController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getTicket(@PathVariable UUID id) {
+	public ResponseEntity<?> getTicket(@PathVariable String id) {
 
 		try {
-			Ticket ticketById = ticketService.getTicketById(id);
+			Ticket ticketById = esTicketService.getTicketById(id);
 			if (ticketById != null) {
 				return new ResponseEntity<>(ticketById, HttpStatus.OK);
 			} else {
@@ -80,7 +83,7 @@ public class TicketController {
 	@GetMapping("/all")
 	private ResponseEntity<?> getAllTickets() {
 
-		return new ResponseEntity<>(ticketService.getAllTickets(), HttpStatus.OK);
+		return new ResponseEntity<>(esTicketService.getAllTickets(), HttpStatus.OK);
 	}
 
 	@PutMapping
@@ -104,7 +107,7 @@ public class TicketController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteTicket(@PathVariable UUID id) {
+	public ResponseEntity<?> deleteTicket(@PathVariable String id) {
 
 		try {
 			return new ResponseEntity<>(ticketService.deleteTicket(id), HttpStatus.OK);

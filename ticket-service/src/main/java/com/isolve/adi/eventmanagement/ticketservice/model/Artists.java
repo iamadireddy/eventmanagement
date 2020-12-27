@@ -1,33 +1,34 @@
 package com.isolve.adi.eventmanagement.ticketservice.model;
 
-import java.util.UUID;
-
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Document(indexName = "artists")
 public class Artists {
 	
 	@Id
-	private UUID id;
+	private String id;
 	private String artistName;
 	private String image;
 	private String description;
 	
 	public Artists() {	}
 	
-	public Artists(UUID id,String artistName, String image, String description) {
+	public Artists(String id,String artistName, String image, String description) {
 		this.id = id;
 		this.artistName = artistName;
 		this.image = image;
 		this.description = description;
 	}
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

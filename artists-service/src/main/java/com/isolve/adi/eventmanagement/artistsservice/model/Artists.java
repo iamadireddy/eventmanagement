@@ -4,13 +4,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-//import org.springframework.data.mongodb.core.mapping.Document;
 
-
-//@Document(indexName = "artists-service", type = "artists")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Document(indexName = "artistInfo")
-@org.springframework.data.mongodb.core.mapping.Document
+@Document(indexName = "artists")
 public class Artists {
 	
 	@Id

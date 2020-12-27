@@ -5,7 +5,6 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,7 +52,7 @@ class TicketserviceApplicationTests {
 	private List<Event> events;
 	private List<Artists> artistsList;
 	private List<EventCategory> eventCategories;
-	UUID tId = UUID.randomUUID();
+	String tId = UUID.randomUUID().toString();
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -65,7 +64,7 @@ class TicketserviceApplicationTests {
 		LocalDate endDate = starDate.plusDays(5);
 		
 		artists = new Artists();
-		UUID aId = UUID.randomUUID();
+		String aId = UUID.randomUUID().toString();
 		artists.setId(aId);
 		artists.setArtistName("Adi");
 		artists.setDescription("Hello Adi");
@@ -75,7 +74,7 @@ class TicketserviceApplicationTests {
 		artistsList.add(artists);
 		
 		eventCategory = new EventCategory();
-		UUID eId = UUID.randomUUID();
+		String eId = UUID.randomUUID().toString();
 		eventCategory.setId(eId);
 		eventCategory.setCategoryName("Music");
 		eventCategory.setImage("Anil");
@@ -84,7 +83,7 @@ class TicketserviceApplicationTests {
 		eventCategories.add(eventCategory);
 		
 		event = new Event();
-		UUID evId = UUID.randomUUID();
+		String evId = UUID.randomUUID().toString();
 		event.setArtistsList(artistsList);
 		event.setAvailableSeats(21);
 		event.setDescription("Testing event");

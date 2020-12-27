@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.isolve.adi.eventmanagement.artistsservice.es.service.ESArtistsService;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsDoesNotExistsException;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsNotCreatedException;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsNotFoundException;

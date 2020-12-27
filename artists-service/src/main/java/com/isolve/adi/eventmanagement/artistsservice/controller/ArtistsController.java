@@ -1,6 +1,5 @@
 package com.isolve.adi.eventmanagement.artistsservice.controller;
 
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.isolve.adi.eventmanagement.artistsservice.es.service.ESArtistsService;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsDoesNotExistsException;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsNotCreatedException;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsNotFoundException;
 import com.isolve.adi.eventmanagement.artistsservice.model.Artists;
 import com.isolve.adi.eventmanagement.artistsservice.service.ArtistsService;
+import com.isolve.adi.eventmanagement.artistsservice.service.ESArtistsService;
 
 @RestController
 @RequestMapping("/api/v1/artists")
@@ -28,13 +27,13 @@ public class ArtistsController {
 	
 	private ArtistsService artistsService;
 	
-	@Autowired(required = true)
-	private ESArtistsService eSArtistService;
+	//@Autowired(required = true)
+	private ESArtistsService esArtistService;
 	
 	@Autowired
-	public ArtistsController(ArtistsService artistsService) {
+	public ArtistsController(ArtistsService artistsService, ESArtistsService esArtistService) {
 		this.artistsService = artistsService;
-		//this.esArtistService = esArtistService;
+		this.esArtistService = esArtistService;
 	}
 
 	@PostMapping
@@ -55,7 +54,7 @@ public class ArtistsController {
 	public ResponseEntity<?> getArtist(@PathVariable String id){
 		
 		try {
-			Map<String, Object> artistsById = eSArtistService.getArtistsById(id);
+			Artists artistsById = esArtistService.getArtistsById(id);
 			if(artistsById != null) {
 				return new ResponseEntity<>(artistsById, HttpStatus.OK);
 			}else {
@@ -69,7 +68,7 @@ public class ArtistsController {
 	@GetMapping("/all")
 	private ResponseEntity<?> getAllArtists(){
 		
-		return new ResponseEntity<>(eSArtistService.getAllArtists(), HttpStatus.OK);
+		return new ResponseEntity<>(esArtistService.getAllArtists(), HttpStatus.OK);
 	}
 	
 	@PutMapping

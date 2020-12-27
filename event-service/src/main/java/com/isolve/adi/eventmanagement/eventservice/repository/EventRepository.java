@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.isolve.adi.eventmanagement.eventservice.model.Event;
 
 @Repository
-public interface EventRepository extends MongoRepository<Event, UUID>{
+public interface EventRepository extends MongoRepository<Event, String>{
 
 }

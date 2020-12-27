@@ -1,7 +1,6 @@
-package com.isolve.adi.eventmanagement.artistsservice.es.service;
+package com.isolve.adi.eventmanagement.artistsservice.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsDoesNotExistsException;
 import com.isolve.adi.eventmanagement.artistsservice.exception.ArtistsNotCreatedException;
@@ -16,7 +15,7 @@ public interface ESArtistsService {
 	
 	boolean deleteArtists(String id) throws ArtistsDoesNotExistsException;
 	
-	Map<String, Object> updateArtists(Artists artists);
+	Artists updateArtists(Artists artists);
 	
-	Map<String, Object> getArtistsById(String id) throws ArtistsNotFoundException;
+	Artists getArtistsById(String id) throws ArtistsNotFoundException;
 }

@@ -12,5 +12,5 @@ import com.isolve.adi.eventmanagement.ticketservice.model.Event;
 public interface EventServiceProxy {
 
 	@GetMapping("/api/v1/event/{id}")
-	public Event getEventById(@PathVariable UUID id);
+	public Event getEventById(@PathVariable String id);
 }

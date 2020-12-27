@@ -12,5 +12,5 @@ import com.isolve.adi.eventmanagement.eventservice.model.EventCategory;
 public interface EventCategoryServiceProxy {
 
 	@GetMapping("/api/v1/event-category/{id}")
-	public EventCategory getEventCategory(@PathVariable UUID id);
+	public EventCategory getEventCategory(@PathVariable String id);
 }

@@ -11,16 +11,19 @@ import com.isolve.adi.eventmanagement.eventcategoryservice.exception.EventCatego
 import com.isolve.adi.eventmanagement.eventcategoryservice.exception.EventCategoryNotCreatedException;
 import com.isolve.adi.eventmanagement.eventcategoryservice.exception.EventCategoryNotFoundException;
 import com.isolve.adi.eventmanagement.eventcategoryservice.model.EventCategory;
+import com.isolve.adi.eventmanagement.eventcategoryservice.repository.ESEventCategoryRepository;
 import com.isolve.adi.eventmanagement.eventcategoryservice.repository.EventCategoryRepository;
 
 @Service
 public class EventCategoryServiceImpl implements EventCategoryService {
 	
 	private EventCategoryRepository eventCategoryRepository;
+	private ESEventCategoryService esEventCategoryService; 
 	
 	@Autowired
-	public EventCategoryServiceImpl(EventCategoryRepository eventCategoryRepository) {
+	public EventCategoryServiceImpl(EventCategoryRepository eventCategoryRepository, ESEventCategoryService esEventCategoryService) {
 		this.eventCategoryRepository = eventCategoryRepository;
+		this.esEventCategoryService = esEventCategoryService;
 	}
 
 	@Override
@@ -30,22 +33,26 @@ public class EventCategoryServiceImpl implements EventCategoryService {
 			throw new EventCategoryNotCreatedException("Event category was already exists");
 		}else {
 			EventCategory eventCat = eventCategoryRepository.insert(eventCategory);
+			esEventCategoryService.createEventCategory(eventCat);
 			return eventCat;
 		}
 	}
 
+	/*
 	@Override
 	public List<EventCategory> getAllEventCategories() {
 		return eventCategoryRepository.findAll();
 	}
+	*/
 
 	@Override
-	public boolean deleteEventCategory(UUID id) throws EventCategoryDoesNotExistsException {
+	public boolean deleteEventCategory(String id) throws EventCategoryDoesNotExistsException {
 		
 		if(!eventCategoryRepository.findById(id).isPresent())
 			throw new EventCategoryDoesNotExistsException("Event category was not found");
 		else {
 			eventCategoryRepository.deleteById(id);
+			esEventCategoryService.deleteEventCategory(id);
 			return true;
 		}
 	}
@@ -55,6 +62,7 @@ public class EventCategoryServiceImpl implements EventCategoryService {
 		
 		EventCategory updateEventCategory = eventCategoryRepository.save(eventCategory);
 		if(updateEventCategory != null) {
+			esEventCategoryService.updateEventCategory(eventCategory);
 			return eventCategory;
 		}
 		else
@@ -62,7 +70,7 @@ public class EventCategoryServiceImpl implements EventCategoryService {
 	}
 
 	@Override
-	public EventCategory getEventCategoryById(UUID id) throws EventCategoryNotFoundException {
+	public EventCategory getEventCategoryById(String id) throws EventCategoryNotFoundException {
 		
 		Optional<EventCategory> eventCategory = eventCategoryRepository.findById(id);
 		if(!eventCategory.isPresent())
@@ -70,5 +78,4 @@ public class EventCategoryServiceImpl implements EventCategoryService {
 		else
 			return eventCategory.get();
 	}
-
 }

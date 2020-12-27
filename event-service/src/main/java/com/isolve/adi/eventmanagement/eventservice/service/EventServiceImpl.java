@@ -2,8 +2,8 @@ package com.isolve.adi.eventmanagement.eventservice.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isolve.adi.eventmanagement.eventservice.exception.EventDoesNotExistsException;
@@ -16,10 +16,13 @@ import com.isolve.adi.eventmanagement.eventservice.repository.EventRepository;
 public class EventServiceImpl implements EventService{
 	
 	private EventRepository eventRepository; 
+	private ESEventService esEventService;
 	
-	public EventServiceImpl(EventRepository eventRepository) {
+	@Autowired
+	public EventServiceImpl(EventRepository eventRepository, ESEventService esEventService) {
 		
 		this.eventRepository = eventRepository;
+		this.esEventService = esEventService;
 	}
 
 	@Override
@@ -29,22 +32,26 @@ public class EventServiceImpl implements EventService{
 			throw new EventNotCreatedException("Event was already exists");
 		}else {
 			Event evnt = eventRepository.insert(event);
+			esEventService.createEvent(event);
 			return evnt;
 		}
 	}
 
+	/*
 	@Override
 	public List<Event> getAllEvents() {
 		return eventRepository.findAll();
 	}
+	*/
 
 	@Override
-	public boolean deleteEvent(UUID id) throws EventDoesNotExistsException {
+	public boolean deleteEvent(String id) throws EventDoesNotExistsException {
 		
 		if(!eventRepository.findById(id).isPresent())
 			throw new EventDoesNotExistsException("Event was not found");
 		else {
 			eventRepository.deleteById(id);
+			esEventService.deleteEvent(id);
 			return true;
 		}
 	}
@@ -54,14 +61,16 @@ public class EventServiceImpl implements EventService{
 		
 		Event updateEvent = eventRepository.save(event);
 		if(updateEvent != null) {
+			esEventService.updateEvent(event);
 			return event;
 		}
 		else
 			return null;
 	}
 
+	/*
 	@Override
-	public Event getEventById(UUID id) throws EventNotFoundException {
+	public Event getEventById(String id) throws EventNotFoundException {
 		
 		Optional<Event> event = eventRepository.findById(id);
 		if(!event.isPresent())
@@ -69,5 +78,5 @@ public class EventServiceImpl implements EventService{
 		else
 			return event.get();
 	}
-
+	*/
 }

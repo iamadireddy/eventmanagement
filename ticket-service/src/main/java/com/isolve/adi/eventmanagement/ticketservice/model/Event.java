@@ -2,21 +2,22 @@ package com.isolve.adi.eventmanagement.ticketservice.model;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.elasticsearch.annotations.Document;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
-@Document
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Document(indexName = "event")
 public class Event {
 
 	@Id
-	private UUID id;
+	private String id;
 	private String eventTitle;
 	@JsonDeserialize(using = LocalDateDeserializer.class)  
 	@JsonSerialize(using = LocalDateSerializer.class)  
@@ -34,7 +35,7 @@ public class Event {
 	
 	public Event() {	}
 
-	public Event(UUID id, String eventTitle, LocalDate eventStartDate, LocalDate eventEndDate, String description,
+	public Event(String id, String eventTitle, LocalDate eventStartDate, LocalDate eventEndDate, String description,
 			String eventImage, List<Artists> artistsList, EventCategory eventCategory, Double ticketPrice,
 			Integer totalSeats, Integer availableSeats) {
 		this.id = id;
@@ -50,11 +51,11 @@ public class Event {
 		this.availableSeats = availableSeats;
 	}
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

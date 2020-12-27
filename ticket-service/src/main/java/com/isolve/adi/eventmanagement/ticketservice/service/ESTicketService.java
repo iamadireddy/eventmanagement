@@ -8,17 +8,17 @@ import com.isolve.adi.eventmanagement.ticketservice.exception.TicketNotCreatedEx
 import com.isolve.adi.eventmanagement.ticketservice.exception.TicketNotFoundException;
 import com.isolve.adi.eventmanagement.ticketservice.model.Ticket;
 
-public interface TicketService {
+public interface ESTicketService {
 
 	Ticket createTicket(Ticket ticket) throws TicketNotCreatedException;
 
-	//List<Ticket> getAllTickets();
+	List<Ticket> getAllTickets();
 	
 	boolean deleteTicket(String id) throws TicketDoesNotExistsException;
 	
 	Ticket updateTicket(Ticket ticket);
 	
-	//Ticket getTicketById(String id) throws TicketNotFoundException;
+	Ticket getTicketById(String id) throws TicketNotFoundException;
 
-	Integer getAllTicketsBetweenDates(LocalDate fromDate, LocalDate toDate);
+	//Integer getAllTicketsBetweenDates(LocalDate fromDate, LocalDate toDate);
 }

@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isolve.adi.eventmanagement.ticketservice.exception.TicketDoesNotExistsException;
@@ -20,9 +21,12 @@ import com.isolve.adi.eventmanagement.ticketservice.repository.TicketRepository;
 public class TicketServiceImpl implements TicketService {
 	
 	private TicketRepository ticketRepository;
+	private ESTicketService esTicketService;
 	
-	public TicketServiceImpl(TicketRepository ticketRepository) {
+	@Autowired
+	public TicketServiceImpl(TicketRepository ticketRepository, ESTicketService esTicketService) {
 		this.ticketRepository = ticketRepository;
+		this.esTicketService = esTicketService;
 	}
 
 	@Override
@@ -32,22 +36,26 @@ public class TicketServiceImpl implements TicketService {
 			throw new TicketNotCreatedException("Ticket was already exists");
 		}else {
 			Ticket tkt = ticketRepository.insert(ticket);
+			esTicketService.createTicket(tkt);
 			return tkt;
 		}
 	}
 
+	/*
 	@Override
 	public List<Ticket> getAllTickets() {
 		return ticketRepository.findAll();
 	}
+	*/
 
 	@Override
-	public boolean deleteTicket(UUID id) throws TicketDoesNotExistsException {
+	public boolean deleteTicket(String id) throws TicketDoesNotExistsException {
 		
 		if(!ticketRepository.findById(id).isPresent())
 			throw new TicketDoesNotExistsException("Ticket was not found");
 		else {
 			ticketRepository.deleteById(id);
+			esTicketService.deleteTicket(id);
 			return true;
 		}
 	}
@@ -57,14 +65,16 @@ public class TicketServiceImpl implements TicketService {
 		
 		Ticket updatedTicket = ticketRepository.save(ticket);
 		if(updatedTicket != null) {
+			esTicketService.updateTicket(ticket);
 			return ticket;
 		}
 		else
 			return null;
 	}
 
+	/*
 	@Override
-	public Ticket getTicketById(UUID id) throws TicketNotFoundException {
+	public Ticket getTicketById(String id) throws TicketNotFoundException {
 
 		Optional<Ticket> ticket = ticketRepository.findById(id);
 		if(!ticket.isPresent())
@@ -72,6 +82,7 @@ public class TicketServiceImpl implements TicketService {
 		else
 			return ticket.get();
 	}
+	*/
 
 	@Override
 	public Integer getAllTicketsBetweenDates(LocalDate fromDate, LocalDate toDate) {

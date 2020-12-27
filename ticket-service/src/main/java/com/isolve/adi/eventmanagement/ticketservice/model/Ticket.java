@@ -5,13 +5,16 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Document(indexName = "ticket")
 public class Ticket {
 
 	@Id
-	private UUID id;
+	private String id;
 	private String ticketNumber;
 	private Double totalPrice;
 	private Event event;
@@ -21,7 +24,7 @@ public class Ticket {
 	
 	public Ticket() {	}
 
-	public Ticket(UUID id, String ticketNumber, Double totalPrice, Event event, LocalDate ticketBookedDate,
+	public Ticket(String id, String ticketNumber, Double totalPrice, Event event, LocalDate ticketBookedDate,
 			Integer noOfTickets, Double ticketPrice) {
 		this.id = id;
 		this.ticketNumber = ticketNumber;
@@ -32,11 +35,11 @@ public class Ticket {
 		this.ticketPrice = ticketPrice;
 	}
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

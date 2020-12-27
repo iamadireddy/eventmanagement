@@ -1,32 +1,33 @@
 package com.isolve.adi.eventmanagement.eventservice.model;
 
-import java.util.UUID;
-
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Document(indexName = "eventcategory")
 public class EventCategory {
 
 	@Id
-	private UUID id;
+	private String id;
 	private String categoryName;
 	private String image;
 	
 	public EventCategory() {	}
 
-	public EventCategory(UUID id, String categoryName, String image) {
+	public EventCategory(String id, String categoryName, String image) {
 		super();
 		this.id = id;
 		this.categoryName = categoryName;
 		this.image = image;
 	}
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

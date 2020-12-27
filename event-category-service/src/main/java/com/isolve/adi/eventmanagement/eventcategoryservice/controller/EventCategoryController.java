@@ -18,6 +18,7 @@ import com.isolve.adi.eventmanagement.eventcategoryservice.exception.EventCatego
 import com.isolve.adi.eventmanagement.eventcategoryservice.exception.EventCategoryNotCreatedException;
 import com.isolve.adi.eventmanagement.eventcategoryservice.exception.EventCategoryNotFoundException;
 import com.isolve.adi.eventmanagement.eventcategoryservice.model.EventCategory;
+import com.isolve.adi.eventmanagement.eventcategoryservice.service.ESEventCategoryService;
 import com.isolve.adi.eventmanagement.eventcategoryservice.service.EventCategoryService;
 
 @RestController
@@ -25,17 +26,19 @@ import com.isolve.adi.eventmanagement.eventcategoryservice.service.EventCategory
 public class EventCategoryController {
 
 	private EventCategoryService eventCategoryService;
+	private ESEventCategoryService esEventCategoryService;
 
 	@Autowired
-	public EventCategoryController(EventCategoryService eventCategoryService) {
+	public EventCategoryController(EventCategoryService eventCategoryService, ESEventCategoryService esEventCategoryService) {
 		this.eventCategoryService= eventCategoryService;
+		this.esEventCategoryService = esEventCategoryService;
 	}
 
 	@PostMapping
 	public ResponseEntity<?> createEventCategory(@RequestBody EventCategory eventCategor) {
 
 		try {
-			eventCategor.setId(UUID.randomUUID());
+			eventCategor.setId(UUID.randomUUID().toString());
 			return new ResponseEntity<>(eventCategoryService.createEventCategory(eventCategor), HttpStatus.CREATED);
 		} catch (EventCategoryNotCreatedException e) {
 			e.printStackTrace();
@@ -44,10 +47,10 @@ public class EventCategoryController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getEventCategory(@PathVariable UUID id) {
+	public ResponseEntity<?> getEventCategory(@PathVariable String id) {
 
 		try {
-			EventCategory eventCategoryById = eventCategoryService.getEventCategoryById(id);
+			EventCategory eventCategoryById = esEventCategoryService.getEventCategoryById(id);
 			if (eventCategoryById != null) {
 				return new ResponseEntity<>(eventCategoryById, HttpStatus.OK);
 			} else {
@@ -62,7 +65,7 @@ public class EventCategoryController {
 	@GetMapping("/all")
 	private ResponseEntity<?> getAllEventCategories() {
 
-		return new ResponseEntity<>(eventCategoryService.getAllEventCategories(), HttpStatus.OK);
+		return new ResponseEntity<>(esEventCategoryService.getAllEventCategories(), HttpStatus.OK);
 	}
 
 	@PutMapping
@@ -76,7 +79,7 @@ public class EventCategoryController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteEventCategory(@PathVariable UUID id) {
+	public ResponseEntity<?> deleteEventCategory(@PathVariable String id) {
 
 		try {
 			return new ResponseEntity<>(eventCategoryService.deleteEventCategory(id), HttpStatus.OK);

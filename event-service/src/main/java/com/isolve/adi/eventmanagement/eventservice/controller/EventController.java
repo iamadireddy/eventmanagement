@@ -24,25 +24,26 @@ import com.isolve.adi.eventmanagement.eventservice.model.Artists;
 import com.isolve.adi.eventmanagement.eventservice.model.Event;
 import com.isolve.adi.eventmanagement.eventservice.proxy.ArtistsServiceProxy;
 import com.isolve.adi.eventmanagement.eventservice.proxy.EventCategoryServiceProxy;
+import com.isolve.adi.eventmanagement.eventservice.service.ESEventService;
 import com.isolve.adi.eventmanagement.eventservice.service.EventService;
 
 @RestController
 @RequestMapping("/api/v1/event")
 public class EventController {
 	
-	private EventService eventService;
-	
+	private EventService eventService;	
 	//@Autowired
 	private ArtistsServiceProxy artistsServiceProxy;
-	
 	//@Autowired
 	private EventCategoryServiceProxy eventCategoryServiceProxy;
+	private ESEventService esEventService;
 	
 	@Autowired
-	public EventController(EventService eventService, ArtistsServiceProxy artistsServiceProxy, EventCategoryServiceProxy eventCategoryServiceProxy) {
+	public EventController(EventService eventService, ArtistsServiceProxy artistsServiceProxy, EventCategoryServiceProxy eventCategoryServiceProxy, ESEventService esEventService) {
 		this.eventService = eventService;
 		this.artistsServiceProxy = artistsServiceProxy;
 		this.eventCategoryServiceProxy = eventCategoryServiceProxy;
+		this.esEventService = esEventService;
 	}
 	
 	
@@ -50,7 +51,7 @@ public class EventController {
 	public ResponseEntity<?> createEvent(@RequestBody Event event) {
 
 		try {
-			event.setId(UUID.randomUUID());
+			event.setId(UUID.randomUUID().toString());
 			List<Artists> artists = artistsServiceProxy.getArtistsList();
 			event.setArtistsList(artists);
 			event.setEventCategory(eventCategoryServiceProxy.getEventCategory(event.getEventCategory().getId()));
@@ -62,12 +63,12 @@ public class EventController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getEvent(@PathVariable UUID id) {
+	public ResponseEntity<?> getEvent(@PathVariable String id) {
 
 		System.out.println("Inside getEvent");
 		
 		try {
-			Event eventById = eventService.getEventById(id);
+			Event eventById = esEventService.getEventById(id);
 			if (eventById != null) {
 				return new ResponseEntity<>(eventById, HttpStatus.OK);
 			} else {
@@ -82,15 +83,15 @@ public class EventController {
 	@GetMapping("/all")
 	private ResponseEntity<?> getAllEvents() {
 		
-		eventService.getAllEvents().stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		esEventService.getAllEvents().stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-		return new ResponseEntity<>(eventService.getAllEvents(), HttpStatus.OK);
+		return new ResponseEntity<>(esEventService.getAllEvents(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/allEventsByCategory")
 	private ResponseEntity<?> getAllEventsByCategory() {
 
-		return new ResponseEntity<>(eventService.getAllEvents().stream().collect(Collectors.groupingBy(Event::getEventCategory, Collectors.counting())), HttpStatus.OK);
+		return new ResponseEntity<>(esEventService.getAllEvents().stream().collect(Collectors.groupingBy(Event::getEventCategory, Collectors.counting())), HttpStatus.OK);
 	}
 
 	/*@GetMapping("/eventsByArtists")
@@ -110,7 +111,7 @@ public class EventController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteEvent(@PathVariable UUID id) {
+	public ResponseEntity<?> deleteEvent(@PathVariable String id) {
 
 		try {
 			return new ResponseEntity<>(eventService.deleteEvent(id), HttpStatus.OK);

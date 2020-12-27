@@ -8,8 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableEurekaClient
-@EnableAutoConfiguration
-@ComponentScan("{com.isolve.adi.eventmanagement.artistsservice}")
 public class ArtistsServiceApplication {
 
 	public static void main(String[] args) {

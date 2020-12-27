@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import com.isolve.adi.eventmanagement.artistsservice.model.Artists;
 
-@EnableMongoRepositories
 @Repository
 public interface ArtistsRepository extends MongoRepository<Artists, String>{
 

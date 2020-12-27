@@ -42,7 +42,7 @@ class EventcategoryserviceApplicationTests {
 	@InjectMocks
 	private EventCategoryController eventCategoryController;
 	private List<EventCategory> eventCategories;
-	UUID id = UUID.randomUUID();
+	String id = UUID.randomUUID().toString();
 
 	@BeforeEach
 	public void setUp() throws Exception {

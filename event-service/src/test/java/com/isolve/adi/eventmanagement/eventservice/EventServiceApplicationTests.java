@@ -49,7 +49,7 @@ class EventserviceApplicationTests {
 	private List<Event> events;
 	private List<Artists> artistsList;
 	private List<EventCategory> eventCategories;
-	UUID eId = UUID.randomUUID();
+	String eId = UUID.randomUUID().toString();
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -60,7 +60,7 @@ class EventserviceApplicationTests {
 		LocalDate endDate = starDate.plusDays(5);
 		
 		artists = new Artists();
-		artists.setId(UUID.randomUUID());
+		artists.setId(UUID.randomUUID().toString());
 		artists.setArtistName("Adi");
 		artists.setDescription("Hello Adi");
 		artists.setImage("Anil");
@@ -69,7 +69,7 @@ class EventserviceApplicationTests {
 		artistsList.add(artists);
 		
 		eventCategory = new EventCategory();
-		eventCategory.setId(UUID.randomUUID());
+		eventCategory.setId(UUID.randomUUID().toString());
 		eventCategory.setCategoryName("Music");
 		eventCategory.setImage("Anil");
 		

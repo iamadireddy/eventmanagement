@@ -10,16 +10,16 @@ import com.isolve.adi.eventmanagement.eventservice.exception.EventNotFoundExcept
 import com.isolve.adi.eventmanagement.eventservice.model.Event;
 
 @Service
-public interface EventService {
+public interface ESEventService {
 
 	Event createEvent(Event event) throws EventNotCreatedException;
 
-	//List<Event> getAllEvents();
+	List<Event> getAllEvents();
 	
 	boolean deleteEvent(String id) throws EventDoesNotExistsException;
 	
 	Event updateEvent(Event event);
 	
-	//Event getEventById(String id) throws EventNotFoundException;
+	Event getEventById(String id) throws EventNotFoundException;
 	
 }
